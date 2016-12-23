@@ -11,6 +11,8 @@ ops = {
     "/": operator.div
 }
 
+ACCEPTABLE_CHARACTERS = ['+', '-', '*', '/', '(', ')']
+
 def enter_integer(order):
     while True:
         try:
@@ -91,29 +93,62 @@ def find_solutions(numbers, mode):
         print "No solutions found!"
     return num_results
 
+def strip_guess(guess):
+    new_list = []
+    replacement = ''
+    concat_indices = []
+    for i in range(len(guess)):
+        try:
+            current = int(guess[i])
+            replacement += guess[i]
+        except ValueError:
+            if replacement:
+                new_list.append(replacement)
+            new_list.append(guess[i])
+            replacement = ''
+    if replacement:
+        new_list.append(replacement)
+    return new_list
+
+def is_valid_guess(guess, card):
+    nums_in_solution = []
+    string_card = [str(elem) for elem in card]
+    for elem in guess:
+        if elem not in string_card and elem not in ACCEPTABLE_CHARACTERS:
+            if elem not in ACCEPTABLE_CHARACTERS:
+                print 'Invalid character(s) used.'
+                return False
+            if elem not in string_card:
+                print 'You used a character that was not on the card.'
+                return False
+        if elem in string_card:
+            nums_in_solution.append(elem)
+    if sorted(nums_in_solution) != sorted(string_card):
+        print 'You did not use all the numbers on the card.'
+        return False
+    return True
+
+def evaluate_solution(stripped_guess):
+    evaluated = eval(''.join(stripped_guess))
+    if evaluated == 24:
+        print 'That is a correct solution!'
+        return True
+    else:
+        print 'Incorrect. This evaluates to: %s' %evaluated
+        return False
+
 def check_guess(card):
     print 'Press Ctrl+C to give up.'
     try:
         while True:
-            guess = list(raw_input('Enter solution: ').replace(' ', ''))
-            print guess
-            new_list = []
-            for i in range(len(guess) - 1):
-                subset = guess[i:i+2]
-                print subset
-                try:
-                    first = int(subset[0])
-                    second = int(subset[1])
-                    new_list.append(str(first) + str(second))
-                except ValueError:
-                    new_list.append(subset)
-            print new_list
-
-            if ast.literal_eval(guess) == 24:
-                print 'That is a correct solution!'
-                break
+            guess = strip_guess(list(raw_input('Enter solution: ').replace(' ', '')))
+            is_valid = is_valid_guess(guess, card)
+            if is_valid:
+                correct = evaluate_solution(guess)
+                if correct:
+                    break
             else:
-                print 'This evaluates to: %s' %eval(guess)
+                continue
     except KeyboardInterrupt:
         print '-----------------'
         print 'Give up?'
@@ -157,4 +192,5 @@ if mode == 'G':
 # Don't use eval or try to do it safely
 # Check that solution equals 24
 # Require that only valid characters are in input
-# regexp split on operators or parenthesis, but retain operators and parenthesis. gah.
+# regexp split on operators or parenthesis, but retain operators and parenthesis.
+# need to use floats to evaluate
