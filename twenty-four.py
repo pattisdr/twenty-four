@@ -192,6 +192,7 @@ if mode == 'G':
 
 # TODO
 # Add more cases with parenthesis - probably missing some
-# Add option to filter out negative numbers from calculation.
+# Add option to filter out negative numbers/fractions from potential solutions.
 # Group similar calculations together?
 # Eliminate calculations that are the same via associate/commutative properties?
+# Better ways to make difficult cards
