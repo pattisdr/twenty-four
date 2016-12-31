@@ -50,7 +50,7 @@ def generate_card(range, len, secondrange=None, secondlen=None):
         nums = random.sample(range, len)
         if secondrange:
             nums = nums + random.sample(secondrange, secondlen)
-        solutions = find_solutions(nums, mode)
+        solutions = find_solutions([float(num) for num in nums], mode)
     return nums
 
 def find_solutions(numbers, mode):
@@ -59,7 +59,6 @@ def find_solutions(numbers, mode):
     num_results = 0
     for num_com in num_combos: # Loops through all number permutations (24 possibilities)
         for op_com in ops_combos: # (Loops through all operator combinations (64 possibilities))
-            result = 0
             try: # Moves the parenthesis around in the calculation - probably missing some
                 zero_two_one = ops[op_com[1]](ops[op_com[0]](num_com[0], num_com[1]), ops[op_com[2]](num_com[2], num_com[3]))
                 if zero_two_one == 24:
@@ -184,10 +183,12 @@ if mode == 'G':
         check_guess(card)
     elif difficulty == 'I':
         card = generate_card(xrange(2,11), 2, xrange(11,24), 2)
+        print 'Your card is: %s' %str(card)
         check_guess(card)
     else:
-        print 'No advanced option yet.'
-        # print random.randint(2, 23)
+        card = generate_card(xrange(10,24), 4)
+        print 'Your card is: %s' %str(card)
+        check_guess(card)
 
 # TODO
 # Add more cases with parenthesis - probably missing some
