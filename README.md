@@ -1,6 +1,6 @@
 # twenty-four
 
-24(a) game
+24 game
 by suntex international inc. https://www.24game.com/
 
 Game mode or solver mode.
