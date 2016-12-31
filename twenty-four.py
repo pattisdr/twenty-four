@@ -195,8 +195,3 @@ if mode == 'G':
 # Add option to filter out negative numbers from calculation.
 # Group similar calculations together?
 # Eliminate calculations that are the same via associate/commutative properties?
-# Don't use eval or try to do it safely
-# Check that solution equals 24
-# Require that only valid characters are in input
-# regexp split on operators or parenthesis, but retain operators and parenthesis.
-# need to use floats to evaluate
