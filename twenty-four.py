@@ -111,16 +111,21 @@ def strip_guess(guess):
     return new_list
 
 def is_valid_guess(guess, card):
+    character_error = 'Invalid character(s) used.'
+    number_error = 'You used a character that was not on the card.'
     nums_in_solution = []
     string_card = [str(elem) for elem in card]
     for elem in guess:
         if elem not in string_card and elem not in ACCEPTABLE_CHARACTERS:
-            if elem not in ACCEPTABLE_CHARACTERS:
-                print 'Invalid character(s) used.'
+            if elem not in ACCEPTABLE_CHARACTERS and elem in string_card:
+                print character_error
                 return False
-            if elem not in string_card:
-                print 'You used a character that was not on the card.'
+            if elem not in string_card and elem in ACCEPTABLE_CHARACTERS:
+                print number_error
                 return False
+            print character_error
+            print number_error
+            return False
         if elem in string_card:
             nums_in_solution.append(elem)
     if sorted(nums_in_solution) != sorted(string_card):
@@ -153,7 +158,7 @@ def check_guess(card):
         print '-----------------'
         print 'Give up?'
         print 'Solutions:'
-        find_solutions(card, 'S')
+        find_solutions([float(elem) for elem in card], 'S')
 
 print "Welcome to the 24-solver"
 print "-----------------------"
@@ -179,7 +184,7 @@ if mode == 'G':
         check_guess(card)
     elif difficulty == 'I':
         card = generate_card(xrange(2,11), 2, xrange(11,24), 2)
-        print card
+        check_guess(card)
     else:
         print 'No advanced option yet.'
         # print random.randint(2, 23)
